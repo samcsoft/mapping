@@ -12,12 +12,24 @@ long = list(data["LON"])
 latit = list(data["LAT"])
 location = list(data["LOCATION"])
 status = list(data["STATUS"])
+elev = list(data["ELEV"])
 
+def color_producer(elev):
+    result = 'lightgray'
+    if elev < 1000:
+        result = "orange"
+    elif elev < 3000:
+        result = "blue"
+    elif elev < 7000:
+        result = "darkblue"
+    else:
+        result = "purple"
+    
+    return result
 
-
-for lat, lon, loc, stat in zip(latit, long, location, status):
+for lat, lon, loc, stat, ele, in zip(latit, long, location, status, elev):
     v_location = "Location: " + loc + "; Status: " + stat
-    fg.add_child(folium.Marker(location = [lat, lon], popup=v_location, icon=folium.Icon(color='blue')))
+    fg.add_child(folium.Marker(location = [lat, lon], popup=v_location, icon=folium.Icon(color=color_producer(ele))))
 
 map.add_child(fg)
 
